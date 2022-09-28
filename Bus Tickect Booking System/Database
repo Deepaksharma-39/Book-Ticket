@@ -1,0 +1,9 @@
+MYSQL DataBases;
+
+create database javaProject;
+
+create table Admin(
+adminId int primary key auto_increment,
+username varchar(10),
+password varchar(20)
+);
