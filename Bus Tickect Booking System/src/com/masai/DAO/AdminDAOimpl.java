@@ -52,19 +52,13 @@ public class AdminDAOimpl implements AdminDAO {
 			
 			PreparedStatement ps= con.prepareStatement(query);
 			
-			ps.setString(1, bus.getBusNo());
-			ps.setString(2, bus.getBusName());
-			ps.setBoolean(3, bus.isAc());
-			ps.setString(4, bus.getSource());
-			ps.setString(5, bus.getDestination());
-			ps.setString(6, bus.getDeparture());
-			ps.setString(7, bus.getArrival());
-			ps.setInt(8, bus.getTotalSeats());
+
+
 			
 			int res= ps.executeUpdate();
 			
 			if(res>0) {
-				msg="Registration Successful";
+				msg=" Bus Registration Successful";
 			}
 			
 		}catch(SQLException e) {

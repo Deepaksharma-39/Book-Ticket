@@ -7,3 +7,20 @@ adminId int primary key auto_increment,
 username varchar(10),
 password varchar(20)
 );
+
+create table buses(
+bus_no int primary key,
+bus_name varchar(25),
+source_location varchar(35),
+destination_location varchar(35),
+departure_date Date,
+departure_time Time
+);
+
+create table busDetails(
+bus_no int primary key,
+total_seats int not null,
+fare int not null,
+ac boolean not null,
+foreign key(bus_no) references buses(bus_no)
+);
