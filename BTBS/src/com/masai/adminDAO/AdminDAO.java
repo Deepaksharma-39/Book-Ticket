@@ -17,6 +17,4 @@ public interface AdminDAO {
 	
 	public String removeBus(String busNo);
 	
-	public String changeBusDetails(String busNo);
-	
 }

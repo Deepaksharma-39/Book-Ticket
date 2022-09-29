@@ -18,4 +18,16 @@ public class CustomerDAOimpl implements CustomerDAO {
 		
 	}
 
+	@Override
+	public String customerRegister(String username, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String customerLogin(String username, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

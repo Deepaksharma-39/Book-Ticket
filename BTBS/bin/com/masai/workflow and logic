@@ -1,0 +1,54 @@
+create table admin(
+name varchar(55),
+username varchar(20) primary key,
+password varchar(20) not null
+);
+
+*****Register***
+insert into admin values(?,?,?);
+
+
+******Login*******
+select name from admin where username =? and password =?;
+
+create table bus(
+busNo varchar(20) primary key,
+name varchar(20) not null,
+source varchar(20) not null,
+destination varchar(20) not null,
+departure_date date not null,
+departure_time time not null,
+total_seats int not null,
+occupied_seats int default 0 not null,
+username varchar(20) not null,
+foreign key(username) references admin(username)
+);
+
+*******Add bus*******
+insert into bus values(?,?,?,?,?,?,?,?);
+
+
+*****show bus******
+select * from bus where username=?;
+
+***********delete bus**********
+Delete from bus where busNo=?
+
+
+create table customer(
+name varcahr(55),
+customerid int primary key AUTO_INCREMENT,
+username varchar(20) unique not null,
+password varchar(20) not null,
+);
+
+
+*******select a journey*********
+select * from buses where source=? and destination=? and departure_date= sysdate()+1;
+
+
+********Book Ticket*********
+select ticketId, customerid, customername,busname, busno, departuredate, departuretime, fare from ticket innerjoin customer innerjoin bus on ticket.customerid= customer.customerid
+
+
+
