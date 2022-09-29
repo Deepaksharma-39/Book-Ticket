@@ -16,13 +16,10 @@ public class RegisterBuses {
 		Scanner input= new Scanner(System.in);
 		
 		System.out.println("Enter Bus number");
-		String busNo=input.next();
+		int busNo=input.nextInt();
 		
 		System.out.println("Enter bus Name");
 		String busname=input.next();
-		
-		System.out.println("Is Bus Equipped with AC(True/false)");
-		boolean ac=input.nextBoolean();
 		
 		System.out.println("Enter the Bus Source");
 		String source=input.next();
@@ -31,17 +28,23 @@ public class RegisterBuses {
 		String destination=input.next();
 		
 		input.nextLine();
-		System.out.println("Enter the departure time (YYYY-MM-DD hh: mm: ss)");
-		String departure=input.nextLine();
+		System.out.println("Enter the departure date (YYYY-MM-DD)");
+		String departure_date=input.nextLine();
 		
-		System.out.println("Enter the Arrival time (YYYY-MM-DD hh: mm: ss)");
-		String arrival=input.nextLine();
+		System.out.println("Enter the departure time (hh:mm:ss)");
+		String departure_time=input.nextLine();
 		
-		System.out.println("Enter no of seats available");
-		int seats=input.nextInt();
+		System.out.println("Enter total no of seats abailable");
+		int total_seats=input.nextInt();
+		
+		System.out.println("Enter the fare per seats");
+		int fare=input.nextInt();
+		
+		System.out.println("Is AC available");
+		boolean ac=input.nextBoolean();
 		
 		AdminDAO adi=new AdminDAOimpl();
-		String query=adi.registerBus(new Bus(busNo, busname, ac, source, destination, departure, arrival, seats));
+		String query=adi.registerBus(new Bus(busNo, busname, source, destination, departure_date, departure_time, total_seats, fare, ac));
 		
 		System.out.println(query);
 		

@@ -6,102 +6,138 @@ import java.sql.Time;
 
 public class Bus {
 
-	private String busName;
-	private String busNo;
-	private boolean ac;
+	
+	private int bus_no;
+	private String bus_name;
 	private String source;
 	private String destination;
-	private String departure;
-	private String arrival;
-	private int totalSeats;
+	private String departure_date;
+	private String departure_time;
+	private int total_seats;
+	private int far;
+	private boolean ac;
 	
+
 	public Bus() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Bus(String busName, String busNo, boolean ac, String source, String destination, String departure,
-			String arrival, int totalSeats) {
-		super();
-		this.busName = busName;
-		this.busNo = busNo;
-		this.ac = ac;
-		this.source = source;
-		this.destination = destination;
-		this.departure = departure;
-		this.arrival = arrival;
-		this.totalSeats = totalSeats;
+
+	public int getBus_no() {
+		return bus_no;
 	}
 
-	public String getBusName() {
-		return busName;
+
+	public void setBus_no(int bus_no) {
+		this.bus_no = bus_no;
 	}
 
-	public void setBusName(String busName) {
-		this.busName = busName;
+
+	public String getBus_name() {
+		return bus_name;
 	}
 
-	public String getBusNo() {
-		return busNo;
+
+	public void setBus_name(String bus_name) {
+		this.bus_name = bus_name;
 	}
 
-	public void setBusNo(String busNo) {
-		this.busNo = busNo;
-	}
-
-	public boolean isAc() {
-		return ac;
-	}
-
-	public void setAc(boolean ac) {
-		this.ac = ac;
-	}
 
 	public String getSource() {
 		return source;
 	}
 
+
 	public void setSource(String source) {
 		this.source = source;
 	}
+
 
 	public String getDestination() {
 		return destination;
 	}
 
+
 	public void setDestination(String destination) {
 		this.destination = destination;
 	}
 
-	public String getDeparture() {
-		return departure;
+
+	public String getDeparture_date() {
+		return departure_date;
 	}
 
-	public void setDeparture(String departure) {
-		this.departure = departure;
+
+	public void setDeparture_date(String departure_date) {
+		this.departure_date = departure_date;
 	}
 
-	public String getArrival() {
-		return arrival;
+
+	public String getDeparture_time() {
+		return departure_time;
 	}
 
-	public void setArrival(String arrival) {
-		this.arrival = arrival;
+
+	public void setDeparture_time(String departure_time) {
+		this.departure_time = departure_time;
 	}
 
-	public int getTotalSeats() {
-		return totalSeats;
+
+	public int getTotal_seats() {
+		return total_seats;
 	}
 
-	public void setTotalSeats(int totalSeats) {
-		this.totalSeats = totalSeats;
+
+	public void setTotal_seats(int total_seats) {
+		this.total_seats = total_seats;
 	}
+
+
+	public int getFar() {
+		return far;
+	}
+
+
+	public void setFar(int far) {
+		this.far = far;
+	}
+
+
+	public boolean isAc() {
+		return ac;
+	}
+
+
+	public void setAc(boolean ac) {
+		this.ac = ac;
+	}
+
+
+	public Bus(int bus_no, String bus_name, String source, String destination, String departure_date,
+			String departure_time, int total_seats, int far, boolean ac) {
+		super();
+		this.bus_no = bus_no;
+		this.bus_name = bus_name;
+		this.source = source;
+		this.destination = destination;
+		this.departure_date = departure_date;
+		this.departure_time = departure_time;
+		this.total_seats = total_seats;
+		this.far = far;
+		this.ac = ac;
+	}
+
 
 	@Override
 	public String toString() {
-		return "Bus [busName=" + busName + ", busNo=" + busNo + ", ac=" + ac + ", source=" + source + ", destination="
-				+ destination + ", departure=" + departure + ", arrival=" + arrival + ", totalSeats=" + totalSeats
-				+ "]";
+		return "Bus [bus_no=" + bus_no + ", bus_name=" + bus_name + ", source=" + source + ", destination="
+				+ destination + ", departure_date=" + departure_date + ", departure_time=" + departure_time
+				+ ", total_seats=" + total_seats + ", far=" + far + ", ac=" + ac + "]";
 	}
+
+
+	
+
 	
 	
 }
