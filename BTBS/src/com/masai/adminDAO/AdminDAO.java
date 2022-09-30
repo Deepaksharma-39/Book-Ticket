@@ -4,12 +4,13 @@ import java.util.List;
 
 import com.masai.bean.Admin;
 import com.masai.bean.Bus;
+import com.masai.exceptions.AdminException;
 
 public interface AdminDAO {
 
 	public String registerAdmin(Admin admin);
 	
-	public String adminLogin(String username, String password);
+	public Admin adminLogin(String username, String password) throws AdminException;
 	
 	public List<Bus> showBus(String username);
 	
