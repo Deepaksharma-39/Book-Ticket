@@ -9,9 +9,8 @@ public class DatabaseConn {
 	
 public static Connection provideConnection() {
 		
-		Connection con=null;
 		
-		
+		Connection con =null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -29,9 +28,8 @@ public static Connection provideConnection() {
 			e.printStackTrace();
 		}
 		
-		
-		
 		return con;
+		
 		
 	}
 }

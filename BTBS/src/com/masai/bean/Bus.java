@@ -1,5 +1,7 @@
 package com.masai.bean;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 public class Bus {
@@ -13,7 +15,15 @@ public class Bus {
 	private int capacity;
 	private int seatsAvailable;
 	private String username;
-	public String getBusno() {
+	private int fare;
+	
+	public int getFare() {
+        return fare;
+    }
+    public void setFare(int fare) {
+        this.fare = fare;
+    }
+    public String getBusno() {
 		return busno;
 	}
 	public void setBusno(String busno) {
@@ -68,7 +78,7 @@ public class Bus {
 		this.username = username;
 	}
 	public Bus(String busno, String name, String source, String destination, Date depaartureDate, Date departureTime,
-			int capacity, int seatsAvailable, String username) {
+			int capacity, int seatsAvailable, String username, int fair) {
 		super();
 		this.busno = busno;
 		this.name = name;
@@ -79,13 +89,14 @@ public class Bus {
 		this.capacity = capacity;
 		this.seatsAvailable = seatsAvailable;
 		this.username = username;
+		this.fare=fair;
 	}
-	@Override
-	public String toString() {
-		return "Bus [busno=" + busno + ", name=" + name + ", source=" + source + ", destination=" + destination
-				+ ", depaartureDate=" + depaartureDate + ", departureTime=" + departureTime + ", capacity=" + capacity
-				+ ", seatsAvailable=" + seatsAvailable + ", username=" + username + "]";
-	}
+    @Override
+    public String toString() {
+        return "Bus [busno=" + busno + ", name=" + name + ", source=" + source + ", destination=" + destination
+                + ", depaartureDate=" + depaartureDate + ", departureTime=" + departureTime + ", capacity=" + capacity
+                + ", seatsAvailable=" + seatsAvailable + ", username=" + username + ", fare=" + fare + "]";
+    }
 	
 	
 }

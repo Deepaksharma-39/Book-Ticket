@@ -1,18 +1,18 @@
 package com.masai.customerDAO;
 
-import java.util.List;
 
 
-import com.masai.bean.Bus;
 import com.masai.bean.Customer;
+import com.masai.exceptions.CustomerException;
+
 
 public interface CustomerDAO {
 	
 	public String registerCustomer(Customer customer);
 	
-	public String CustomerLogin(String username,String password);
+	public Customer CustomerLogin(String username,String password) throws CustomerException;
 	
-	public List<Bus> showBus(String source,String destination);
+	public String CancelTicket(String tickectid);
 	
 	
 	
