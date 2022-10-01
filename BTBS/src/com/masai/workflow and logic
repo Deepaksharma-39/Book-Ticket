@@ -11,15 +11,37 @@ insert into admin values(?,?,?);
 ******Login*******
 select name from admin where username =? and password =?;
 
+	private String busno;
+	private String name;
+	private String source;
+	private String destination;
+	private String depaartureDate;
+	private String departureTime;
+	private int capacity;
+	private int seatsAvailable;
+	private String username;
+	private int fare;
+	
+	ps.setString(1, bus.getBusno());
+            ps.setString(2, bus.getName());
+            ps.setString(3, bus.getSource());
+            ps.setString(4, bus.getDestination());
+            ps.setString(5, bus.getDepaartureDate());
+            ps.setString(6, bus.getDepartureTime());
+            ps.setInt(7, bus.getCapacity());
+            ps.setInt(8, bus.getSeatsAvailable());
+            ps.setString(9, bus.getUsername());
+            ps.setInt(10, bus.getFare());
+	
 create table bus(
 busNo varchar(20) primary key,
 name varchar(20) not null,
 source varchar(20) not null,
 destination varchar(20) not null,
-departure_date date not null,
-departure_time time not null,
-total_seats int not null,
-occupied_seats int default 0 not null,
+departuredate varchar(35) not null,
+departuretime varchar(35) not null,
+totalseats int not null,
+availableseats int default 0 not null,
 username varchar(20) not null,
 foreign key(username) references admin(username)
 );
@@ -49,10 +71,11 @@ select * from buses where source=? and destination=? and departure_date= sysdate
 
 
 create table ticket(
-ticketid int primary key,
+ticketid int primary key auto_increment,
 customerid int not null,
 busNo varchar(20),
-foreign key(customerid) references customer(customerid)
+foreign key(customerid) references customer(customerid),
+foreign key(busno) references Bus(busno)
 );
 
 

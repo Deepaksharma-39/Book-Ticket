@@ -1,9 +1,9 @@
 package com.masai.usecases;
 
-import java.text.DateFormat;
+
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Scanner;
 
 import com.masai.adminDAO.AdminDAO;
@@ -32,44 +32,24 @@ public class AddBus {
         String destination=input.next();
         
         
-        
-        
-       
-        Date departureDate=null;
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         System.out.println("Enter Departure date (DD/MM/YYYY)");
-        while(departureDate == null)
-        {
-            try
-            {
-                String dDate=input.next();
-                departureDate = df.parse(dDate);
-            }
-            catch(ParseException e)
-            {
-                System.out.println("Please enter a valid date! Format is DD/MM/YYYY");
-            }
-        }
-       
-        Date departureTime=null;
-        DateFormat dft = new SimpleDateFormat("hh.mm");
+        String dDate=input.next();
         
-        System.out.println("Enter Departure Time (HH.MM) 24hr format");
-        while(departureTime == null)
-        {
-            try
-            {
-                String dTime=input.next();
-                departureTime = dft.parse(dTime);
-            }
-            catch(ParseException e)
-            {
-                System.out.println("Please enter a valid Time! Format is HH/MM (24hr format)");
-            }
+        SimpleDateFormat format = new SimpleDateFormat( "MM/dd/yyyy" );
+        
+        java.sql.Date sqlDate=null;
+        
+        try {
+            java.util.Date myDate = format.parse( dDate );
+            sqlDate = new java.sql.Date( myDate.getTime() );
+        } catch (ParseException e) {
+            
+            System.out.println(e.getMessage());
         }
         
         
-        
+        System.out.println("Enter Departure Time (HHMM) 24hr format");
+        String dTime=input.next();
         
         System.out.println("Enter Bus Capacity");
         int capacity=input.nextInt();
@@ -86,12 +66,11 @@ public class AddBus {
         String username=input.next();
         
         
-        Bus bus=new Bus(busno, busName, source, destination, departureDate, departureTime, capacity, availableSeats, username, fare);
+        Bus bus=new Bus(busno, busName, source, destination, sqlDate, dTime, capacity, availableSeats, username, fare);
         
         
         AdminDAO dao=new AdminDAOimpl();
-        String res=dao.addBus(bus);
-        
+        msg=dao.addBus(bus);
         
         return msg;               
         

@@ -6,15 +6,16 @@ import java.util.Scanner;
 import com.masai.bean.Customer;
 import com.masai.customerDAO.CustomerDAO;
 import com.masai.customerDAO.CustomerDAOimpl;
+import com.masai.exceptions.CustomerException;
 
 public class CustomerSignUp {
 
-    public String SignUp() {
+    public int SignUp() throws CustomerException {
+        int customerid=0;
         String msg= "SignUp Failed";
         
         Scanner input = new Scanner(System.in);
         
-        System.out.println("WELCOME TO ADMIN SIGNUP PAGE");
         
         System.out.println("Enter Name");
         String name= input.nextLine();
@@ -25,11 +26,21 @@ public class CustomerSignUp {
         System.out.println("Enter Password");
         String Password=input.next();
         
+        
+        
         Customer customer=new Customer(name, 0, username, Password);
         
         CustomerDAO dao= new CustomerDAOimpl();
-        msg=dao.registerCustomer(customer);
+        customerid=dao.registerCustomer(customer);
+        if(customerid>0) {
+        }else {
+            CustomerException ce= new CustomerException(msg);
+            throw ce;
+         
+        }
         
-        return msg;
+        
+        return customerid;
+        
     }
 }

@@ -6,12 +6,11 @@ import com.masai.adminDAO.AdminDAO;
 import com.masai.adminDAO.AdminDAOimpl;
 import com.masai.bean.Admin;
 
-public class RegisterAdmin {
+public class AdminSingUp {
 
     public  String signup() {
         Scanner input = new Scanner(System.in);
         
-        System.out.println("WELCOME TO ADMIN SIGNUP PAGE");
         
         System.out.println("Enter Name");
         String name= input.nextLine();
@@ -26,7 +25,6 @@ public class RegisterAdmin {
                     
         AdminDAO admindao= new AdminDAOimpl();
         String msg=admindao.registerAdmin(admin);
-        
         return msg;
     }
     

@@ -10,8 +10,8 @@ import com.masai.exceptions.CustomerException;
 
 public class CustomerLogin {
 
-    public Boolean signin() {
-        boolean result=false;
+    public int signin() {
+        int result=0;
         Scanner input=new Scanner(System.in);
         String msg="Signin Failed";
         
@@ -27,11 +27,11 @@ public class CustomerLogin {
             System.out.println("***************************************");
             System.out.println("Welcome "+customer.getName());
             msg="Signin Successful";
-            result=true;
+            result=customer.getCustomerId();
             
         } catch (CustomerException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            
+            System.out.println(e.getMessage());
         } 
         
         System.out.println(msg);

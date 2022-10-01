@@ -12,11 +12,11 @@ public interface AdminDAO {
 	
 	public Admin adminLogin(String username, String password) throws AdminException;
 	
-	public List<Bus> showBus(String username);
+	public List<Bus> showBus(String username) throws AdminException;
 	
 	public String addBus(Bus bus);
 	
-	public String removeBus(String busNo);
+	public Boolean removeBus(String busNo);
 	
 	public String changeBusDetails(String busNo);
 	
