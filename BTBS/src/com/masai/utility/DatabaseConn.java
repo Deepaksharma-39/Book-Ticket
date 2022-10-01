@@ -14,7 +14,7 @@ public static Connection provideConnection() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
@@ -24,7 +24,7 @@ public static Connection provideConnection() {
 		try {
 			con=DriverManager.getConnection(url,"root","MyNewPass");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		

@@ -1,19 +1,24 @@
 package com.masai.customerDAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-
+import com.masai.bean.Bus;
 import com.masai.bean.Customer;
+import com.masai.bean.Ticket;
 import com.masai.exceptions.CustomerException;
 import com.masai.utility.DatabaseConn;
 
 public class CustomerDAOimpl implements CustomerDAO {
 
     @Override
-    public String registerCustomer(Customer customer) {
+    public int registerCustomer(Customer customer) {
+        int customerid=0;
         String msg= "REGISTRATION UNSUCCESSFUL";
         
         
@@ -32,18 +37,33 @@ public class CustomerDAOimpl implements CustomerDAO {
                 msg="REGISTRATION SUCCESSFUL";
             }
             
+            
+            String query2="select customerid from customer where username=? and password=?";
+            PreparedStatement ps1=con.prepareStatement(query2);
+            ps1.setString(1,customer.getUsername());
+            ps1.setString(2, customer.getPassword());
+            
+            ResultSet rs=ps1.executeQuery();
+            
+            if(rs.next()) {
+                customerid=rs.getInt("customerid");
+                System.out.println(msg);
+            }
+            else {
+                
+            }
         }catch(SQLException e) {
             System.out.println(e.getMessage());
         }
     
         
         
-        return msg;
+        return customerid;
     }
 
     @Override
     public Customer CustomerLogin(String username, String password) throws CustomerException {
-    Customer customer=null;
+        Customer customer=null;
         
         try(Connection con=DatabaseConn.provideConnection()){
             
@@ -63,7 +83,7 @@ public class CustomerDAOimpl implements CustomerDAO {
                 
                 customer= new Customer(name, customerid, username1, password1);
             }else {
-                CustomerException ae= new CustomerException("Incorrect Username");
+                CustomerException ae= new CustomerException("Incorrect Username/Password");
                 throw ae;
                 
             }
@@ -79,8 +99,94 @@ public class CustomerDAOimpl implements CustomerDAO {
 
     @Override
     public String CancelTicket(String tickectid) {
-        // TODO Auto-generated method stub
+        
         return null;
+    }
+
+   
+    @Override
+    public List<Bus> SearchBus(String source, String destination) throws CustomerException {
+        List<Bus> buses=new ArrayList<>();
+        
+        try(Connection con=DatabaseConn.provideConnection()){
+            
+            String query="select * from bus where source=? and destination =?";
+            
+            PreparedStatement ps= con.prepareStatement(query);
+            ps.setString(1, source);
+            ps.setString(2, destination);
+            
+            ResultSet rs=ps.executeQuery();
+            
+                
+                while(rs.next()) {
+                    String busno= rs.getString("busno");
+                    String busname= rs.getString("name");
+                    Date ddate=rs.getDate("departureDate");
+                    String dtime=rs.getString("departureTime");
+                    int AvailableSeats=rs.getInt("Availableseats");
+                    int totalSeats=rs.getInt("totalseats");
+                    String username=rs.getString("username");
+                    int fare=rs.getInt("fare");
+                    
+                    Bus bus= new Bus(busno, busname, source, destination, ddate, dtime, totalSeats, AvailableSeats, username, fare);
+                    buses.add(bus);
+                    
+                    }
+                
+            
+            
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        
+        
+        return buses;
+    }
+
+    @Override
+    public Ticket BookTicket(int customerID, String busnum) {
+        
+        Ticket ticket=null;
+        
+        
+        try(Connection con=DatabaseConn.provideConnection()){
+            
+            String query="insert into ticket(customerid,busNo) values(?,?)";
+            
+            PreparedStatement ps= con.prepareStatement(query);
+            ps.setInt(1, customerID);
+            ps.setString(2, busnum);
+            
+            int res= ps.executeUpdate();
+            
+            
+            
+            
+            String query2="select ticketid from ticket where customerid=? and busno=?";
+            PreparedStatement ps1=con.prepareStatement(query2);
+            ps1.setInt(1,customerID);
+            ps1.setString(2, busnum);
+            
+            ResultSet rs=ps1.executeQuery();
+            
+            if(rs.next() && res>0) {
+                int ticketid=rs.getInt("ticketid");
+                int customerid=rs.getInt("customerid");
+                String busnumb=rs.getString("busno");
+                ticket=new Ticket(ticketid, customerid, busnumb);
+            }
+            else {
+                
+            }
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    
+        
+        
+        return ticket;
     }
 
 }

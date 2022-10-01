@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.masai.bean.Admin;
@@ -82,9 +83,44 @@ public  class AdminDAOimpl implements AdminDAO {
 	}
 
 	@Override
-	public List<Bus> showBus(String username) {
-		// TODO Auto-generated method stub
-		List<Bus> buses=null;
+	public List<Bus> showBus(String username) throws AdminException {
+		// 
+		List<Bus> buses=new ArrayList<>();
+		
+		try(Connection con=DatabaseConn.provideConnection()){
+            
+            String query="select * from bus where username = ?";
+            
+            PreparedStatement ps= con.prepareStatement(query);
+            ps.setString(1, username);
+            
+            ResultSet rs=ps.executeQuery();
+            
+           
+                while(rs.next()) {
+                    String name=rs.getString("name");
+                    String busno=rs.getString("busno");
+                    String source=rs.getString("source");
+                    String destination=rs.getString("destination");
+                    Date departureDate=rs.getDate("departureDate");
+                    String departureTime=rs.getString("departureTime");
+                    int totalseats=rs.getInt("totalseats");
+                    int availableseats=rs.getInt("availableseats");
+                    int fare=rs.getInt("fare");
+                    
+                    Bus bus=new Bus(busno, name, source, destination, departureDate, departureTime, totalseats, availableseats, username, fare);
+                    buses.add(bus);
+                }
+                
+                if(buses.size()==0) {
+                    System.out.println("No buses available in database");
+                }
+                
+            
+            
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
 		
 		
 		
@@ -104,12 +140,12 @@ public  class AdminDAOimpl implements AdminDAO {
             ps.setString(2, bus.getName());
             ps.setString(3, bus.getSource());
             ps.setString(4, bus.getDestination());
-            ps.setDate(5,  (Date) bus.getDepaartureDate());
-            ps.setDate(6, (Date) bus.getDepartureTime());
-            ps.setInt(6, bus.getCapacity());
-            ps.setInt(7, bus.getSeatsAvailable());
-            ps.setString(8, bus.getUsername());
-            ps.setInt(9, bus.getFare());
+            ps.setDate(5, bus.getDepaartureDate());
+            ps.setString(6, bus.getDepartureTime());
+            ps.setInt(7, bus.getCapacity());
+            ps.setInt(8, bus.getSeatsAvailable());
+            ps.setString(9, bus.getUsername());
+            ps.setInt(10, bus.getFare());
             
             
             int res= ps.executeUpdate();
@@ -126,12 +162,27 @@ public  class AdminDAOimpl implements AdminDAO {
 	}
 
 	@Override
-	public String removeBus(String busNo) {
+	public Boolean removeBus(String busNo) {
 		
-		String msg="Error// problem in removing bus";
-				
-				
-				return msg;
+		boolean msg=false;
+		try(Connection con=DatabaseConn.provideConnection()){
+            
+            String query="DELETE FROM bus WHERE busno=?;";
+            
+            PreparedStatement ps= con.prepareStatement(query);
+            ps.setString(1, busNo);
+            
+            int res=ps.executeUpdate();
+            if(res>0) {
+                System.out.println("Bus num ->"+busNo+" Deleted from DataBase");
+                msg=true;
+            }
+            
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return msg;
 	}
 
 	@Override

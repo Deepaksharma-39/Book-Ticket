@@ -10,7 +10,10 @@ import com.masai.exceptions.AdminException;
 public class AdminSingin {
 
     
-    public String signin() {
+    
+    public Boolean signin() {
+        boolean result=false;
+        
         Scanner input=new Scanner(System.in);
         String msg="Signin Failed";
         
@@ -26,15 +29,16 @@ public class AdminSingin {
             System.out.println("***************************************");
             System.out.println("Welcome "+adm.getName());
             msg="Signin Successful";
+            result=true;
             
         } catch (AdminException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            
+            System.out.println(e.getMessage());
         }
         
         
+        System.out.println(msg);
         
-        
-        return msg;
+        return result;
     }
 }
