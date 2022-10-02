@@ -16,12 +16,15 @@ public interface CustomerDAO {
 	
 	public Customer CustomerLogin(String username,String password) throws CustomerException;
 	
-	public String CancelTicket(String tickectid);
+	public String CancelTicket(int tickectid);
 	
+	public List<Ticket> showstatus(int ticketid) throws CustomerException;
 	
 	public List<Bus> SearchBus(String source, String destination) throws CustomerException;
 
-    public Ticket BookTicket(int customerID, String busnum);
+    public Ticket BookTicket(int customerID, Bus bus);
+    
+    
 	
 	
 	

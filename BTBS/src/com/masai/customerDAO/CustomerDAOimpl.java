@@ -98,9 +98,28 @@ public class CustomerDAOimpl implements CustomerDAO {
     }
 
     @Override
-    public String CancelTicket(String tickectid) {
+    public String CancelTicket(int ticketid) {
         
-        return null;
+        String msg="";
+        try(Connection con=DatabaseConn.provideConnection()){
+            
+            String query="DELETE FROM ticket WHERE ticketid=?";
+            
+            PreparedStatement ps= con.prepareStatement(query);
+            ps.setInt(1, ticketid);
+            
+            int res=ps.executeUpdate();
+            
+            if(res>0) {
+                msg="Ticket Cancellation Successful";
+            }
+            
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return msg;
+        
     }
 
    
@@ -128,8 +147,9 @@ public class CustomerDAOimpl implements CustomerDAO {
                     int totalSeats=rs.getInt("totalseats");
                     String username=rs.getString("username");
                     int fare=rs.getInt("fare");
+                    String ac=rs.getString("ac");
                     
-                    Bus bus= new Bus(busno, busname, source, destination, ddate, dtime, totalSeats, AvailableSeats, username, fare);
+                    Bus bus= new Bus(busno, busname, source, destination, ddate, dtime, totalSeats, AvailableSeats, username, fare, ac);
                     buses.add(bus);
                     
                     }
@@ -146,47 +166,107 @@ public class CustomerDAOimpl implements CustomerDAO {
     }
 
     @Override
-    public Ticket BookTicket(int customerID, String busnum) {
+    public Ticket BookTicket(int customerID, Bus bus) {
         
-        Ticket ticket=null;
+       Ticket ticket=null;
         
         
         try(Connection con=DatabaseConn.provideConnection()){
             
-            String query="insert into ticket(customerid,busNo) values(?,?)";
+            String query="insert into ticket(customerid,busno) values(?,?)";
             
             PreparedStatement ps= con.prepareStatement(query);
             ps.setInt(1, customerID);
-            ps.setString(2, busnum);
+            ps.setString(2, bus.getBusno());
             
             int res= ps.executeUpdate();
             
             
             
             
-            String query2="select ticketid from ticket where customerid=? and busno=?";
+            String query2="select c.name customer, c.customerid,\r\n"
+                    + "b.name bus, b.availableseats, b.source, b.destination, b.departuredate, b.departuretime,\r\n"
+                    + "t.ticketid,t.bookingstatus\r\n"
+                    + "from customer c INNER JOIN bus b INNER JOIN \r\n"
+                    + "ticket t ON c.customerid = t.customerid AND b.busno=t.busno";
             PreparedStatement ps1=con.prepareStatement(query2);
-            ps1.setInt(1,customerID);
-            ps1.setString(2, busnum);
             
             ResultSet rs=ps1.executeQuery();
             
-            if(rs.next() && res>0) {
-                int ticketid=rs.getInt("ticketid");
+            if(rs.next()) {
+                String cname=rs.getString("customer");
+                String bname=rs.getString("bus");
+                String source=rs.getString("source");
+                String destination=rs.getString("destination");
+                Date departDate=rs.getDate("departureDate");
+                String departTime=rs.getString("departuretime");
                 int customerid=rs.getInt("customerid");
-                String busnumb=rs.getString("busno");
-                ticket=new Ticket(ticketid, customerid, busnumb);
-            }
-            else {
+                int ticketid=rs.getInt("ticketid");
+                String status=rs.getString("bookingstatus");
+                
+                ticket=new Ticket(cname, cname, bname, source, destination, departDate, departTime, ticketid, status);
+                
+                ;
                 
             }
+            
         }catch(SQLException e) {
             System.out.println(e.getMessage());
         }
-    
+        
         
         
         return ticket;
+    }
+
+    @Override
+    public List<Ticket> showstatus(int customerid) throws CustomerException {
+       List<Ticket> ticket=new ArrayList<>();
+       
+       try(Connection con=DatabaseConn.provideConnection()){
+           
+           String query="select c.name customer, c.customerid,\r\n"
+                   + "b.name bus, b.source, b.destination, b.departuredate, b.departuretime,\r\n"
+                   + "t.ticketid,t.bookingstatus\r\n"
+                   + "from customer c INNER JOIN bus b INNER JOIN \r\n"
+                   + "ticket t ON c.customerid = t.customerid AND b.busno=t.busno AND c.customerid=?";
+           
+           PreparedStatement ps= con.prepareStatement(query);
+           ps.setInt(1, customerid);
+          
+           
+           ResultSet rs=ps.executeQuery();
+           
+           while(rs.next()) {
+               String cname=rs.getString("customer");
+               String bname=rs.getString("bus");
+               String source=rs.getString("source");
+               String destination=rs.getString("destination");
+               Date departDate=rs.getDate("departureDate");
+               String departTime=rs.getString("departuretime");
+               int ticketid=rs.getInt("ticketid");
+               String status=rs.getString("bookingstatus");
+               
+               Ticket tic=new Ticket(cname, cname, bname, source, destination, departDate, departTime, ticketid, status);
+               ticket.add(tic);
+               
+           }
+           
+               if(!ticket.isEmpty()) {
+                   return ticket;
+               }
+               else {
+               CustomerException cs= new CustomerException("No Tickets found");
+               throw cs;
+           }
+           
+       }catch(SQLException e) {
+           System.out.println(e.getMessage());
+       }
+       
+       
+       return ticket;
+              
     }
 
 }

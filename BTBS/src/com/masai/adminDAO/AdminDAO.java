@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.masai.bean.Admin;
 import com.masai.bean.Bus;
+import com.masai.bean.Ticket;
 import com.masai.exceptions.AdminException;
 
 public interface AdminDAO {
@@ -18,6 +19,9 @@ public interface AdminDAO {
 	
 	public Boolean removeBus(String busNo);
 	
-	public String changeBusDetails(String busNo);
+	public String showBookings(String busNo) throws AdminException;
+	
+	
+	
 	
 }

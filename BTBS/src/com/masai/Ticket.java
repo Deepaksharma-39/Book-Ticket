@@ -1,9 +1,15 @@
-package com.masai.bean;
+package com.masai;
 
 import java.sql.Date;
 
 public class Ticket {
 
+//    select c.name, 
+//    b.name, b.availableseats, b.source, b.destination, b.departuredate, b.departuretime, b.availableseats,
+//    t.ticketid
+//    from customer c INNER JOIN bus b INNER JOIN 
+//    ticket t ON c.customerid = t.customerid AND b.busno=t.busno;
+    
     private String cName;
     private String cID;
     private String bName;
@@ -127,11 +133,9 @@ public class Ticket {
     public String toString() {
         return "ticked Id=" + tickedid
                 + "  Name=" + cName + "   Customer ID="+ cID+ ",  Bus Name=" + bName + ",  Source=" + source + "=====> Destination=" + destination
-                + ", departureDate=" + departureDate + ", time=" + time + ", Booking Status=" + status;
+                + ", departureDate=" + departureDate + ", time=" + time + ", Booking Status=" + status
+                + ", tickedid=" + tickedid;
     }
-    
-   
-    
     
     
 }

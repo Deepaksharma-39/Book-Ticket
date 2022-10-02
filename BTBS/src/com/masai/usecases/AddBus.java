@@ -58,6 +58,9 @@ public class AddBus {
         System.out.println("Avaiable Seats");
         int availableSeats=input.nextInt();
         
+        System.out.println("AC/Non-AC");
+        String ac=input.next();
+        
         
         System.out.println("Enter tickect Price per Person");
         int fare=input.nextInt();
@@ -66,7 +69,7 @@ public class AddBus {
         String username=input.next();
         
         
-        Bus bus=new Bus(busno, busName, source, destination, sqlDate, dTime, capacity, availableSeats, username, fare);
+        Bus bus=new Bus(busno, busName, source, destination, sqlDate, dTime, capacity, availableSeats, username, fare, ac);
         
         
         AdminDAO dao=new AdminDAOimpl();

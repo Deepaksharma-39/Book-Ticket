@@ -12,7 +12,14 @@ public class Bus {
 	private String departureTime;
 	private int capacity;
 	private int seatsAvailable;
-	private String username;
+	private String ac;
+	public String getAc() {
+        return ac;
+    }
+    public void setAc(String ac) {
+        this.ac = ac;
+    }
+    private String username;
 	private int fare;
 	
 	public int getFare() {
@@ -76,7 +83,7 @@ public class Bus {
 		this.username = username;
 	}
 	public Bus(String busno, String name, String source, String destination, Date depaartureDate, String departureTime,
-			int capacity, int seatsAvailable, String username, int fair) {
+			int capacity, int seatsAvailable, String username, int fair,String ac) {
 		super();
 		this.busno = busno;
 		this.name = name;
@@ -88,13 +95,15 @@ public class Bus {
 		this.seatsAvailable = seatsAvailable;
 		this.username = username;
 		this.fare=fair;
+		this.ac=ac;
 	}
     @Override
     public String toString() {
-        return "Bus [busno=" + busno + ", name=" + name + ", source=" + source + ", destination=" + destination
-                + ", depaartureDate=" + depaartureDate + ", departureTime=" + departureTime + ", capacity=" + capacity
-                + ", seatsAvailable=" + seatsAvailable + ", username=" + username + ", fare=" + fare + "]";
+        return "busno=" + busno + " | name=" + name 
+                + " | depaartureDate=" + depaartureDate + " | departureTime=" + departureTime 
+                + " | Available seats=" + seatsAvailable + " | " + ac + " | fare=" + fare;
     }
+    
 	
 	
 }
