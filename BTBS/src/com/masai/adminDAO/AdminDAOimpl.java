@@ -7,9 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.masai.bean.Admin;
 import com.masai.bean.Bus;
+import com.masai.bean.Ticket;
 import com.masai.exceptions.AdminException;
 import com.masai.utility.DatabaseConn;
 
@@ -107,8 +109,10 @@ public  class AdminDAOimpl implements AdminDAO {
                     int totalseats=rs.getInt("totalseats");
                     int availableseats=rs.getInt("availableseats");
                     int fare=rs.getInt("fare");
+                    String ac=rs.getString("ac");
                     
-                    Bus bus=new Bus(busno, name, source, destination, departureDate, departureTime, totalseats, availableseats, username, fare);
+                    Bus bus=new Bus(busno, name, source, destination, departureDate, departureTime, totalseats, availableseats, username, fare, ac);
+                    
                     buses.add(bus);
                 }
                 
@@ -133,7 +137,7 @@ public  class AdminDAOimpl implements AdminDAO {
 		String msg="Error// Bus registration failed";
 		try(Connection con=DatabaseConn.provideConnection()){
             
-            String query="insert into bus values(?,?,?,?,?,?,?,?,?,?)";
+            String query="insert into bus values(?,?,?,?,?,?,?,?,?,?,?)";
             
             PreparedStatement ps= con.prepareStatement(query);
             ps.setString(1, bus.getBusno());
@@ -144,8 +148,9 @@ public  class AdminDAOimpl implements AdminDAO {
             ps.setString(6, bus.getDepartureTime());
             ps.setInt(7, bus.getCapacity());
             ps.setInt(8, bus.getSeatsAvailable());
-            ps.setString(9, bus.getUsername());
-            ps.setInt(10, bus.getFare());
+            ps.setString(9, bus.getAc());
+            ps.setString(10, bus.getUsername());
+            ps.setInt(11, bus.getFare());
             
             
             int res= ps.executeUpdate();
@@ -185,13 +190,81 @@ public  class AdminDAOimpl implements AdminDAO {
         return msg;
 	}
 
-	@Override
-	public String changeBusDetails(String busNo) {
-		String msg="Bus modifications failed";
-		
-		
-		
-		return msg;
-	}
+
+
+    @Override
+    public String showBookings(String username) throws AdminException {
+        String message="Error";
+        
+        try(Connection con=DatabaseConn.provideConnection()){
+            
+            String query="select c.name customer, c.customerid,\r\n"
+                    + "b.busno busno, b.source, b.destination, b.departuredate, b.departuretime,\r\n"
+                    + "t.ticketid,t.bookingstatus\r\n"
+                    + "from customer c INNER JOIN bus b INNER JOIN \r\n"
+                    + "ticket t ON c.customerid = t.customerid AND b.busno=t.busno AND b.username=?";
+            
+            PreparedStatement ps= con.prepareStatement(query);
+            ps.setString(1, username);
+            
+            ResultSet rs=ps.executeQuery();
+            int i=1;
+            Ticket ticket=null;
+            while(rs.next()) {
+                String cname=rs.getString("customer");
+                String bname=rs.getString("busno");
+                String source=rs.getString("source");
+                String destination=rs.getString("destination");
+                Date departDate=rs.getDate("departureDate");
+                String departTime=rs.getString("departuretime");
+                int customerid=rs.getInt("customerid");
+                int ticketid=rs.getInt("ticketid");
+                String status=rs.getString("bookingstatus");
+                
+                 ticket=new Ticket(cname, cname, bname, source, destination, departDate, departTime, ticketid, status);
+                System.out.println(ticket);
+            }
+            System.out.println("********************************************************");
+            
+            
+            System.out.println("Enter ticket ID to confirm ticket");
+            Scanner sc= new Scanner(System.in);
+            int X=sc.nextInt();
+            String secondQuery="UPDATE ticket\r\n"
+                    + "SET bookingstatus = 'Booked'\r\n"
+                    + "WHERE ticketid=?";
+            
+            PreparedStatement ps1=con.prepareStatement(secondQuery);
+            ps1.setInt(1, X);
+            
+            int res=ps1.executeUpdate();
+            if(res>0) {
+               
+                
+                String query3="UPDATE bus \r\n"
+                        + "SET availableseats=availableseats-1 \r\n"
+                        + "WHERE busno=?;";
+                
+                PreparedStatement ps2=con.prepareStatement(secondQuery);
+//                ps2.setString(1, busNo);
+                
+                int res1=ps2.executeUpdate();
+                
+                if(res1>0) {
+                    message="Ticked ID : "+ticket.getTickedid()+"-> Booking Confirmed";
+                }
+            }else {
+                AdminException ae=new AdminException("Ticked ID : "+X+" not present in Database");
+                throw ae;
+            }
+            
+            
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+ 
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.masai.bean.Bus;
+import com.masai.main.Main;
 
 public class AdminSigninOption {
 
@@ -14,8 +15,9 @@ public class AdminSigninOption {
         System.out.println("What would you like to do? \n"
                + "1. Add a new Bus \n"
                + "2. Remove Bus \n"
-               + "3. Show all Buses \n"
-               + "4. Exit");
+               + "3. Show all Buses \n "
+               + "4. Confirm bookings \n"
+               + "5. Exit");
         
         int adminChoice=input.nextInt();
         
@@ -53,6 +55,14 @@ public class AdminSigninOption {
             break;
             
         case 4:
+            System.out.println("CONFIRM TICKETS");
+            Bookings con=new Bookings();
+            con.confirmTicket();
+            System.out.println("******************************************");
+            aso.AdminOptions();
+            break;
+            
+        case 5:
             break;
             
         }

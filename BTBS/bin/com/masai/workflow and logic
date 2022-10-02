@@ -38,10 +38,11 @@ busNo varchar(20) primary key,
 name varchar(20) not null,
 source varchar(20) not null,
 destination varchar(20) not null,
-departuredate varchar(35) not null,
+departuredate Date not null,
 departuretime varchar(35) not null,
 totalseats int not null,
 availableseats int default 0 not null,
+ac varchar(20),
 username varchar(20) not null,
 foreign key(username) references admin(username)
 );
@@ -74,6 +75,7 @@ create table ticket(
 ticketid int primary key auto_increment,
 customerid int not null,
 busNo varchar(20),
+bookingStatus varchar(20) default 'Pending',
 foreign key(customerid) references customer(customerid),
 foreign key(busno) references Bus(busno)
 );
@@ -84,3 +86,54 @@ select ticketId, customerid, customername,busname, busno, departuredate, departu
 
 
 
+
+select c.name customer, c.customerid,
+b.busno busno, b.source, b.destination, b.departuredate, b.departuretime,
+t.ticketid,t.bookingstatus
+from customer c INNER JOIN bus b INNER JOIN 
+ticket t ON c.customerid = t.customerid AND b.busno=t.busno AND b.busno='sad';
+
+
+UPDATE ticket
+SET bookingstatus = 'Booked'
+WHERE ticketid=2;
+
+UPDATE bus 
+SET availableseats=availableseats-1 
+WHERE busno='sad';
+
+UPDATE Bus  
+INNER JOIN  
+Customer_table  
+ON customer_table.rel_cust_name = customer_table.cust_id  
+SET customer_table.rel_cust_name = customer_table.cust_name  
+
+
+            String query2="select c.name customer, \r\n"
+                    + "b.name bus, b.source, b.destination, b.departuredate, b.departuretime, b.availableseats,\r\n"
+                    + "t.ticketid\r\n"
+                    + "from customer c INNER JOIN bus b INNER JOIN \r\n"
+                    + "ticket t ON c.customerid = t.customerid AND b.busno=t.busno";
+            PreparedStatement ps1=con.prepareStatement(query2);
+            ps1.setInt(1,customerID);
+            ps1.setString(2, bus.getBusno());
+            
+            ResultSet rs=ps1.executeQuery();
+            
+            if(rs.next()) {
+                String cname=rs.getString("customer");
+                String bname=rs.getString("bus");
+                String source=rs.getString("source");
+                String destination=rs.getString("destination");
+                Date departDate=rs.getDate("departureDate");
+                String departTime=rs.getString("departuretime");
+                int availableSeats=rs.getInt("availableseats");
+                int ticketid=rs.getInt("ticketid");
+                
+                ticket=new Ticket(cname, bname, source, destination, departDate, departTime, availableSeats, ticketid);
+                System.out.println(ticket);
+            }
+            
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }

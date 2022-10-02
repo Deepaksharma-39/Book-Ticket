@@ -31,20 +31,31 @@ public class SearchBus {
         try {
            List<Bus>buses= dao.SearchBus(source, destination);
            
-           int sno=1;
-           Map<Integer, Bus> busDetails= new LinkedHashMap<>();
-           
-           for(int i=0;i<buses.size();i++) {
-               busDetails.put(sno, buses.get(i));
+           if(buses.isEmpty()) {
+               System.out.println("No Buses Available for the current location");
+           }else {
+               
+               
+               int sno=1;
+               
+               Map<Integer, Bus> busDetails= new LinkedHashMap<>();
+               
+              for(int i=0;i<buses.size();i++) {
+                   System.out.println(sno+". "+buses.get(i));
+                   busDetails.put(sno, buses.get(i));
+                   sno++;
+              }
+               
+               
+                   System.out.println("Select bus option");
+                   int option=input.nextInt();               
+                   if(busDetails.containsKey(option)) {
+                       bus=busDetails.get(option);
+                  }
+            
            }
            
            
-               System.out.println("Select any one option");
-               int option=input.nextInt();
-               
-               if(busDetails.containsKey(option)) {
-                   bus=busDetails.get(option);
-               }
                
            
            
