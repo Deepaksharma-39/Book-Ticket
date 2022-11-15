@@ -1,5 +1,5 @@
 # Bus Ticket booking Application
-This is a solo project buildjust 5 days.
+This is a solo project build in just 5 days.
 By using this application one can book and cancel tickets, check booking status, register as an admin and start your own services. 
 
 
